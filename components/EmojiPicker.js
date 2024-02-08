@@ -1,14 +1,17 @@
 import { Modal, Pressable, StyleSheet, View, Text } from 'react-native'
-import { MaterialIcons } from '@expo/vector-icons/MaterialIcons'
+import MaterialIcons from '@expo/vector-icons/MaterialIcons'
+
 export default function EmojiPicker({ isVisible, children, onClose }) {
     return (
         <Modal animationType='slide' transparent={true} visible={isVisible} >
             <View style={styles.modalContent}>
                 <View style={styles.titleContainer}>
+
                     <Text style={styles.title}>Choose a Sticker</Text>
                     <Pressable onPress={onClose}>
-                        <MaterialIcons name='Close' color='#fff' size={22} />
+                        <MaterialIcons name='close' color='#fff' size={22} />
                     </Pressable>
+
                 </View>
                 {children}
             </View>
