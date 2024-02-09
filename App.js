@@ -52,8 +52,17 @@ export default function App() {
   }
 
   const onSaveImageAsync = async () => {
-    if (Platform.OS == 'web') {
-      try {
+    try {
+      if (Platform.OS !== 'web') {
+        const localUri = await captureRef(imageRef, {
+          height: 440, quality: 1
+        })
+
+        await MediaLibrary.saveToLibraryAsync(localUri)
+        if (localUri) {
+          alert('Saved')
+        }
+      } else {
         const dataUrl = await domtoimage.toJpeg(imageRef.current, {
           quality: 0.95,
           width: 320,
@@ -63,30 +72,16 @@ export default function App() {
         link.download = 'sticker-smash.jpeg'
         link.href = dataUrl
         link.click()
-      } catch (e) {
-        console.log(e)
       }
-    } else {
-
-      try {
-        const localUri = await captureRef(imageRef, {
-          height: 440, quality: 1
-        })
-
-        await MediaLibrary.saveToLibraryAsync(localUri)
-        if (localUri) {
-          alert('Saved')
-        }
-      } catch (e) {
-        console.log(e)
-      }
+    } catch (e) {
+      console.log(e)
     }
   }
+
 
   const onModalClose = () => {
     setIsModalVisible(false)
   }
-
 
   return (
 
@@ -121,8 +116,8 @@ export default function App() {
       <StatusBar style='light' />
     </GestureHandlerRootView>
   );
-}
 
+}
 const styles = StyleSheet.create({
   optionsContainer: {
     position: 'absolute',
@@ -146,4 +141,4 @@ const styles = StyleSheet.create({
     flex: 1 / 3,
     alignItems: 'center',
   },
-});
+})
